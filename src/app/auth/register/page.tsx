@@ -37,7 +37,7 @@ export default function Register() {
         try {
           const formData = { name, email, password };
           const response = await axios.post(
-            "https://xlog-backend-next.onrender.com/",
+            process.env.BACKEND_URL as string,
             formData,
             {
               headers: {
