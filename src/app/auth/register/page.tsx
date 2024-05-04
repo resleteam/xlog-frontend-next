@@ -22,8 +22,8 @@ export default function Login() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("reg button works");
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log("register button works");
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -109,7 +109,7 @@ export default function Login() {
                 <div className="flex justify-between">
                   <button
                     className="w-1/4 block-lg bg-secondary px-8 py-3 text-center text-xl font-semibold text-primary outline-none ring-white transition duration-100 hover:ring md:text-base"
-                    onClick={handleSubmit}
+                    onClick={handleClick}
                   >
                     SING UP
                   </button>
