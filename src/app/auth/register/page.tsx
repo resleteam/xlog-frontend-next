@@ -22,7 +22,8 @@ export default function Login() {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (event: FormEventHandler<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLElement>) => {
+    console.log("reg button works");
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -47,7 +48,7 @@ export default function Login() {
       <div className="flex-1">
         <div className="bg-primary w-full h-full flex justify-center items-center">
           <div className="mx-auto max-w-screen-2xl px-4 w-full md:px-8max-w-lg">
-            <form className="mx-auto w-3/4">
+            <div className="mx-auto w-3/4">
               <div className="flex flex-col gap-4 font-light">
                 <div>
                   <h2
@@ -108,7 +109,7 @@ export default function Login() {
                 <div className="flex justify-between">
                   <button
                     className="w-1/4 block-lg bg-secondary px-8 py-3 text-center text-xl font-semibold text-primary outline-none ring-white transition duration-100 hover:ring md:text-base"
-                    onSubmit={(e) => handleSubmit}
+                    onClick={handleSubmit}
                   >
                     SING UP
                   </button>
@@ -178,7 +179,7 @@ export default function Login() {
                   Continue with Google
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>

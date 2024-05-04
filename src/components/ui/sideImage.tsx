@@ -1,7 +1,9 @@
+import Image from "next/image";
+
 export default function SideImage({ title }: { title: string }) {
   return (
     <div className="relative">
-      <img
+      <Image
         src="/pawel-czerwinski-JEV7CrJTUNE-unsplash 1.png"
         alt="Image"
         className="w-full h-full object-cover"
