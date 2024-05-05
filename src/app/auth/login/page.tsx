@@ -12,10 +12,7 @@ const dM_Serif_Display = DM_Serif_Display({
   subsets: ["latin"],
 });
 
-const emailSchema = z
-  .string()
-  .email("Email is not correct")
-  .min(15, "Minimal length is 15 (for example)");
+const emailSchema = z.string().email("Email is not correct");
 const passwordSchema = z.string().min(8, "Minimal password length is 8");
 
 export default function Login() {
@@ -35,7 +32,7 @@ export default function Login() {
 
   const getPasswordErrors = (): z.ZodIssue[] => {
     try {
-      passwordSchema.parse(email);
+      passwordSchema.parse(password);
     } catch (err) {
       if (err instanceof z.ZodError) {
         return err.issues;

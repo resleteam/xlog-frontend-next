@@ -5,11 +5,16 @@ import axios from "axios";
 import { useState, FormEventHandler } from "react";
 import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
+import { z } from "zod";
 
 const dM_Serif_Display = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
 });
+
+const nameSchema = z.string().min(3, "Minimal name length is 3");
+const emailSchema = z.string().email("Email is not correct");
+const passwordSchema = z.string().min(8, "Minimal password length is 8");
 
 export default function Login() {
   const [name, setName] = useState("");
@@ -17,13 +22,53 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [repPassword, setRepPassword] = useState("");
 
-  const isEmailCorrect = (): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const getNameErrors = (): z.ZodIssue[] => {
+    try {
+      nameSchema.parse(name);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
   };
+  const getEmailErrors = (): z.ZodIssue[] => {
+    try {
+      emailSchema.parse(email);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
+  };
+
+  const getPasswordErrors = (): z.ZodIssue[] => {
+    try {
+      passwordSchema.parse(password);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
+  };
+  const getRepPasswordErrors = (): string[] => {
+    if (repPassword != password) return ["Passwords must be same"];
+    return [];
+  };
+
+  const [nameErrors, setNameErrors] = useState<z.ZodIssue[]>([]);
+  const [emailErrors, setEmailErrors] = useState<z.ZodIssue[]>([]);
+  const [passwordErrors, setPasswordErrors] = useState<z.ZodIssue[]>([]);
+  const [repPasswordErrors, setRepPasswordErrors] = useState<string[]>([]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     console.log("register button works");
+    setNameErrors(getNameErrors());
+    setEmailErrors(getEmailErrors());
+    setPasswordErrors(getPasswordErrors());
+    setRepPasswordErrors(getRepPasswordErrors());
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -71,6 +116,13 @@ export default function Login() {
                       "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
                     }
                   />
+                  <ul>
+                    {nameErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 <div>
                   <input
@@ -79,10 +131,16 @@ export default function Login() {
                     value={email}
                     placeholder="Enter your email"
                     className={
-                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring " +
-                      (isEmailCorrect() ? "ring-green-500" : "ring-red-500")
+                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
                     }
                   />
+                  <ul>
+                    {emailErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div>
@@ -94,6 +152,13 @@ export default function Login() {
                     value={password}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
                   />
+                  <ul>
+                    {passwordErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 <div>
                   <input
@@ -104,6 +169,13 @@ export default function Login() {
                     value={repPassword}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
                   />
+                  <ul>
+                    {repPasswordErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="flex justify-between">
