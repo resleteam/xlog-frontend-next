@@ -5,23 +5,52 @@ import axios from "axios";
 import { useState, FormEventHandler } from "react";
 import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
+import { z } from "zod";
 
 const dM_Serif_Display = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
 });
 
+const emailSchema = z
+  .string()
+  .email("Email is not correct")
+  .min(15, "Minimal length is 15 (for example)");
+const passwordSchema = z.string().min(8, "Minimal password length is 8");
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const isEmailCorrect = (): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const getEmailErrors = (): z.ZodIssue[] => {
+    try {
+      emailSchema.parse(email);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
   };
+
+  const getPasswordErrors = (): z.ZodIssue[] => {
+    try {
+      passwordSchema.parse(email);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
+  };
+
+  const [emailErrors, setEmailErrors] = useState<z.ZodIssue[]>([]);
+  const [passwordErrors, setPasswordErrors] = useState<z.ZodIssue[]>([]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     console.log("login button works");
+    setEmailErrors(getEmailErrors());
+    setPasswordErrors(getPasswordErrors());
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -66,10 +95,16 @@ export default function Login() {
                     value={email}
                     placeholder="Enter your email"
                     className={
-                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring " +
-                      (isEmailCorrect() ? "ring-green-500" : "ring-red-500")
+                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
                     }
                   />
+                  <ul>
+                    {emailErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div>
@@ -81,6 +116,13 @@ export default function Login() {
                     value={password}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
                   />
+                  <ul>
+                    {passwordErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="flex justify-between">
