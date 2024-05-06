@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 export default function AuthLayout({
   children,
 }: Readonly<{
-  title: string;
   children: React.ReactNode;
 }>) {
   return (

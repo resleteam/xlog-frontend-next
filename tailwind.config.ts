@@ -17,6 +17,7 @@ const config: Config = {
         primary: "#272727",
         secondary: "#6EEB83",
         mainGray: "#A5A5A5",
+        error: "#FF5E5B",
       },
     },
   },

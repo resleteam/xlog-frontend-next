@@ -5,22 +5,49 @@ import axios from "axios";
 import { useState, FormEventHandler } from "react";
 import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
+import { z } from "zod";
 
 const dM_Serif_Display = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
 });
 
+const emailSchema = z.string().email("Email is not correct");
+const passwordSchema = z.string().min(8, "Minimal password length is 8");
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const isEmailCorrect = (): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  const getEmailErrors = (): z.ZodIssue[] => {
+    try {
+      emailSchema.parse(email);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
   };
 
-  const handleSubmit = (event: FormEventHandler<HTMLButtonElement>) => {
+  const getPasswordErrors = (): z.ZodIssue[] => {
+    try {
+      passwordSchema.parse(password);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return err.issues;
+      }
+    }
+    return [];
+  };
+
+  const [emailErrors, setEmailErrors] = useState<z.ZodIssue[]>([]);
+  const [passwordErrors, setPasswordErrors] = useState<z.ZodIssue[]>([]);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log("login button works");
+    setEmailErrors(getEmailErrors());
+    setPasswordErrors(getPasswordErrors());
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -45,7 +72,7 @@ export default function Login() {
       <div className="flex-1">
         <div className="bg-primary w-full h-full flex justify-center items-center">
           <div className="mx-auto max-w-screen-2xl px-4 w-full md:px-8max-w-lg">
-            <form className="mx-auto w-3/4">
+            <div className="mx-auto w-3/4">
               <div className="flex flex-col gap-4 font-light">
                 <div>
                   <h2
@@ -65,10 +92,16 @@ export default function Login() {
                     value={email}
                     placeholder="Enter your email"
                     className={
-                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring " +
-                      (isEmailCorrect() ? "ring-green-500" : "ring-red-500")
+                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
                     }
                   />
+                  <ul>
+                    {emailErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div>
@@ -80,12 +113,19 @@ export default function Login() {
                     value={password}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
                   />
+                  <ul>
+                    {passwordErrors.map((error, index) => (
+                      <li className="text-error" key={index}>
+                        {error.message}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="flex justify-between">
                   <button
                     className="w-1/4 block-lg bg-secondary px-8 py-3 text-center text-xl font-semibold text-primary outline-none ring-white transition duration-100 hover:ring md:text-base"
-                    onSubmit={(e) => handleSubmit}
+                    onClick={handleClick}
                   >
                     LOGIN
                   </button>
@@ -155,7 +195,7 @@ export default function Login() {
                   Continue with Google
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
