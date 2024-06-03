@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import axios from "axios";
-import { useState, FormEventHandler } from "react";
+import { useState, useEffect, FormEventHandler } from "react";
 import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
 import { z } from "zod";
@@ -18,6 +18,25 @@ const passwordSchema = z.string().min(8, "Minimal password length is 8");
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showSuccessCard, setShowSuccessCard] = useState(false); 
+
+  useEffect(() => {
+    const showSuccess = localStorage.getItem('showSuccessCard');
+    if (showSuccess === 'true') {
+      setShowSuccessCard(true);
+      localStorage.removeItem('showSuccessCard');
+    }
+  }, []);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showSuccessCard) {
+      timer = setTimeout(() => {
+        setShowSuccessCard(false);
+      }, 4000); // 4 Секунд
+    }
+    return () => clearTimeout(timer);
+  }, [showSuccessCard]);
 
   const getEmailErrors = (): z.ZodIssue[] => {
     try {
@@ -44,10 +63,24 @@ export default function Login() {
   const [emailErrors, setEmailErrors] = useState<z.ZodIssue[]>([]);
   const [passwordErrors, setPasswordErrors] = useState<z.ZodIssue[]>([]);
 
+  const userData = {
+    email: "test@test.com",
+    name: "test",
+    password: "123456789"
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     console.log("login button works");
     setEmailErrors(getEmailErrors());
     setPasswordErrors(getPasswordErrors());
+
+    if (email === userData.email && password === userData.password) {
+      localStorage.setItem('showSuccessCard2', 'true');
+      window.location.href = "/app/feed"
+    } else {
+      console.error('Incorrect email or password');
+    }
+
     //TODO: add SWR POST request to server, and rewrite code below
     // try {
     //   const formData = { name, email, password };
@@ -65,9 +98,49 @@ export default function Login() {
     // }
   };
 
+  
+
   return (
     <div className="flex h-full divide-x-8 divide-secondary">
       <SideImage title="Login"></SideImage>
+      {showSuccessCard && (
+        <div className="absolute top-0 right-0 mt-4 mr-4 bg-green-500 text-white p-2 rounded">
+          Sucess!
+          <br></br>
+          Logged out.
+          <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="60" height="50" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" style={{ marginLeft: "100px", marginBottom: "1px", marginTop: "-50px" }}>
+
+            <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+            fill="#000000" stroke="none">
+            <path d="M2508 4931 c-45 -15 -87 -50 -108 -91 -17 -33 -20 -59 -20 -159 l0
+            -120 -57 -11 c-340 -67 -615 -216 -843 -457 -246 -260 -385 -581 -410 -948 -5
+            -71 -9 -417 -10 -767 l0 -638 -140 -192 c-80 -110 -149 -217 -161 -248 -29
+            -73 -31 -203 -6 -280 38 -116 132 -216 247 -263 53 -21 68 -22 456 -25 l401
+            -3 17 -59 c27 -91 83 -177 176 -271 71 -72 100 -94 180 -133 126 -61 200 -79
+            330 -79 130 0 204 18 330 80 79 39 109 61 180 132 88 88 151 190 181 289 l12
+            42 376 0 c410 0 450 4 540 57 144 84 232 270 202 429 -18 97 -38 135 -185 336
+            l-136 186 0 629 c0 665 -8 858 -39 1001 -81 369 -285 685 -589 910 -187 138
+            -382 222 -634 272 l-58 11 0 120 c0 139 -15 182 -78 224 -41 27 -112 39 -154
+            26z m178 -736 c94 -9 238 -51 341 -100 357 -169 596 -494 653 -890 6 -42 10
+            -370 10 -812 0 -474 4 -751 10 -768 6 -15 80 -123 165 -240 153 -210 171 -245
+            143 -273 -17 -17 -2879 -17 -2896 0 -28 28 -10 63 143 273 85 117 159 225 165
+            240 6 17 10 294 10 768 0 752 3 815 40 957 117 454 526 804 993 849 80 8 97 8
+            223 -4z m174 -3486 c-21 -38 -91 -98 -148 -126 -50 -25 -68 -28 -152 -28 -84
+            0 -102 3 -152 28 -57 28 -127 88 -148 126 l-11 21 311 0 311 0 -11 -21z"/>
+            <path d="M1205 4826 c-42 -19 -198 -159 -282 -254 -293 -331 -478 -708 -553
+            -1123 -28 -159 -45 -403 -31 -456 23 -83 93 -135 181 -135 114 1 180 83 180
+            222 0 105 18 250 47 380 84 379 280 718 577 995 68 63 119 119 125 137 44 125
+            -42 249 -171 248 -24 -1 -56 -7 -73 -14z"/>
+            <path d="M3765 4826 c-64 -29 -105 -94 -105 -165 0 -68 18 -95 136 -205 236
+            -222 410 -483 513 -773 67 -186 111 -427 111 -603 0 -139 66 -221 180 -222 88
+            0 158 52 181 134 14 52 -3 301 -31 455 -82 456 -305 880 -635 1208 -155 154
+            -189 178 -263 182 -34 2 -69 -2 -87 -11z"/>
+            </g>
+          </svg>
+        </div>
+      )}
+
+      
 
       <div className="flex-1">
         <div className="bg-primary w-full h-full flex justify-center items-center">
@@ -81,7 +154,7 @@ export default function Login() {
                       " text-left text-2xl font-regular text-white lg:text-5xl"
                     }
                   >
-                    Welcome
+                    Welcome to XLog
                   </h2>
                   <h4 className="text-mainGray">Let`s log you quickly</h4>
                 </div>
@@ -145,7 +218,7 @@ export default function Login() {
                 <div className="relative flex items-center justify-center">
                   <span className="absolute inset-x-0 h-px bg-mainGray"></span>
                   <span className="relative bg-mainGray px-4 text-sm text-white">
-                    Log in with social
+                    OR
                   </span>
                 </div>
 
@@ -157,6 +230,7 @@ export default function Login() {
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    style={{ marginRight: "8px"}}
                   >
                     <path
                       d="M12 0C5.37273 0 0 5.37273 0 12C0 18.0164 4.43182 22.9838 10.2065 23.8516V15.1805H7.23764V12.0262H10.2065V9.92727C10.2065 6.45218 11.8996 4.92655 14.7878 4.92655C16.1711 4.92655 16.9025 5.02909 17.2489 5.076V7.82945H15.2787C14.0525 7.82945 13.6244 8.99182 13.6244 10.302V12.0262H17.2178L16.7302 15.1805H13.6244V23.8773C19.4815 23.0825 24 18.0747 24 12C24 5.37273 18.6273 0 12 0Z"
@@ -174,6 +248,7 @@ export default function Login() {
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    style={{ marginRight: "12px"}}
                   >
                     <path
                       d="M23.7449 12.27C23.7449 11.48 23.6749 10.73 23.5549 10H12.2549V14.51H18.7249C18.4349 15.99 17.5849 17.24 16.3249 18.09V21.09H20.1849C22.4449 19 23.7449 15.92 23.7449 12.27Z"
