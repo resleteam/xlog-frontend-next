@@ -7,6 +7,11 @@ import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
 import { z } from "zod";
 
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import 'primereact/resources/themes/lara-light-cyan/theme.css';
+
+
 const dM_Serif_Display = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
@@ -105,7 +110,7 @@ export default function Login() {
       <SideImage title="Login"></SideImage>
       {showSuccessCard && (
         <div className="absolute top-0 right-0 mt-4 mr-4 bg-green-500 text-white p-2 rounded">
-          Sucess!
+          Success!
           <br></br>
           Logged out.
           <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="60" height="50" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet" style={{ marginLeft: "100px", marginBottom: "1px", marginTop: "-50px" }}>
@@ -178,14 +183,14 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <input
-                    type="password"
+                  
+                  <InputText type="password"
                     name="password"
                     placeholder="Enter your password"
-                    onChange={(e) => setPassword(e.target.value)}
                     value={password}
-                    className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
-                  />
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-1/"
+                    />
                   <ul>
                     {passwordErrors.map((error, index) => (
                       <li className="text-error" key={index}>
@@ -196,12 +201,14 @@ export default function Login() {
                 </div>
 
                 <div className="flex justify-between">
-                  <button
+                  {/*<button
                     className="w-1/4 block-lg bg-secondary px-8 py-3 text-center text-xl font-semibold text-primary outline-none ring-white transition duration-100 hover:ring md:text-base"
                     onClick={handleClick}
                   >
                     LOGIN
-                  </button>
+                  </button> */}
+                  <Button icon="pi pi-google" label="Login" severity="success" className="w-1/5" onClick={handleClick} />
+                  
                   <div className="flex items-center justify-center p-4">
                     <p className="text-center text-n text-white">
                       Do not have an account?{" "}
