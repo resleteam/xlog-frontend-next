@@ -68,12 +68,7 @@ const ScrollList = ({ posts }: { posts: Post[] }) => {
             {post.tags.map((tag, index) => (
               <span
                 key={index}
-                className="inline-block text-gray-800 px-2 py-1 m-1 rounded-full"
-                style={{
-                  borderRadius: '100px',
-                  color: 'rgb(110,235,131)',
-                  border: '2px solid rgb(110,235,131)',
-                }}
+                className="inline-block text-green-400 px-2 py-1 m-1 rounded-full border-2 border-green-400"
               >
                 {tag}
               </span>

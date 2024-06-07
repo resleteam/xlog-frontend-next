@@ -80,6 +80,8 @@ export default function Login() {
     setPasswordErrors(getPasswordErrors());
 
     if (email === userData.email && password === userData.password) {
+      localStorage.setItem('userEmail', userData.email);
+      localStorage.setItem('userName', userData.name);
       localStorage.setItem('showSuccessCard2', 'true');
       window.location.href = "/app/feed"
     } else {
@@ -164,7 +166,7 @@ export default function Login() {
                   <h4 className="text-mainGray">Let`s log you quickly</h4>
                 </div>
                 <div>
-                  <input
+                  {/*<input
                     name="email"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
@@ -172,6 +174,13 @@ export default function Login() {
                     className={
                       "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
                     }
+                  /> */}
+                  <InputText type="email"
+                    placeholder="Enter your email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full"
                   />
                   <ul>
                     {emailErrors.map((error, index) => (
@@ -189,9 +198,9 @@ export default function Login() {
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-1/"
+                    className="w-full"
                     />
-                  <ul>
+                  <ul> 
                     {passwordErrors.map((error, index) => (
                       <li className="text-error" key={index}>
                         {error.message}
@@ -207,7 +216,7 @@ export default function Login() {
                   >
                     LOGIN
                   </button> */}
-                  <Button icon="pi pi-google" label="Login" severity="success" className="w-1/5" onClick={handleClick} />
+                  <Button label="Login" severity="success" className="w-1/5" onClick={handleClick} />
                   
                   <div className="flex items-center justify-center p-4">
                     <p className="text-center text-n text-white">
@@ -229,7 +238,10 @@ export default function Login() {
                   </span>
                 </div>
 
-                <button className="flex items-center justify-center gap-2-lg bg-blue-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-blue-300 transition duration-100 hover:bg-blue-600 focus-visible:ring active:bg-blue-700 md:text-base">
+                <Button icon="pi pi-google" label="Continue with Google" severity="secondary" className="w-full"/>
+                <Button icon="pi pi-facebook" label="Continue with Facebook" severity="info" className="w-full"/>
+
+                {/*<button className="flex items-center justify-center gap-2-lg bg-blue-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-blue-300 transition duration-100 hover:bg-blue-600 focus-visible:ring active:bg-blue-700 md:text-base">
                   <svg
                     className="h-5 w-5 shrink-0"
                     width="24"
@@ -245,7 +257,7 @@ export default function Login() {
                     />
                   </svg>
                   Continue with Facebook
-                </button>
+                </button> 
 
                 <button className="flex items-center justify-center gap-2-lg border border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">
                   <svg
@@ -275,7 +287,7 @@ export default function Login() {
                     />
                   </svg>
                   Continue with Google
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

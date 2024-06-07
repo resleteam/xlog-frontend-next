@@ -7,6 +7,10 @@ import SideImage from "../../../components/ui/sideImage";
 import { DM_Serif_Display } from "next/font/google";
 import { z } from "zod";
 
+import { Button } from 'primereact/button';
+import { InputText } from 'primereact/inputtext';
+import 'primereact/resources/themes/lara-light-cyan/theme.css';
+
 const dM_Serif_Display = DM_Serif_Display({
   weight: "400",
   subsets: ["latin"],
@@ -157,14 +161,19 @@ export default function Login() {
                   <h4 className="text-mainGray">Let`s sing up you quickly</h4>
                 </div>
                 <div>
-                  <input
+                  {/*<input
                     name="name"
                     onChange={(e) => setName(e.target.value)}
                     value={name}
                     placeholder="Enter your name"
-                    className={
-                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
-                    }
+                    className={"w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"}
+                  /> */}
+                  <InputText type="name"
+                    name="name"
+                    onChange={(e) => setName(e.target.value)}
+                    value={name}
+                    placeholder="Enter your name"
+                    className="w-full"
                   />
                   <ul>
                     {nameErrors.map((error, index) => (
@@ -175,14 +184,19 @@ export default function Login() {
                   </ul>
                 </div>
                 <div>
-                  <input
+                  {/*<input
                     name="email"
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     placeholder="Enter your email"
-                    className={
-                      "w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"
-                    }
+                    className={"w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring"}
+                  /> */}
+                  <InputText type="email"
+                    name="email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    placeholder="Enter your email"
+                    className="w-full"
                   />
                   <ul>
                     {emailErrors.map((error, index) => (
@@ -194,13 +208,20 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <input
+                  {/*<input
                     type="password"
                     name="password"
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
                     value={password}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
+                  /> */}
+                  <InputText type="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    className="w-full"
                   />
                   <ul>
                     {passwordErrors.map((error, index) => (
@@ -211,13 +232,20 @@ export default function Login() {
                   </ul>
                 </div>
                 <div>
-                  <input
+                  {/*<input
                     type="password"
                     name="repPassword"
                     placeholder="Confirm your password"
                     onChange={(e) => setRepPassword(e.target.value)}
                     value={repPassword}
                     className="w-full border border-secondary bg-primary px-5 py-4 text-mainGray outline-none border-2 transition duration-100 pl-7 focus:ring "
+                  /> */}
+                  <InputText type="password"
+                    name="repPassword"
+                    placeholder="Confirm your password"
+                    onChange={(e) => setRepPassword(e.target.value)}
+                    value={repPassword}
+                    className="w-full"
                   />
                   <ul>
                     {repPasswordErrors.map((error, index) => (
@@ -229,12 +257,15 @@ export default function Login() {
                 </div>
 
                 <div className="flex justify-between">
-                  <button
+                  {/*<button
                     className="w-1/4 block-lg bg-secondary px-8 py-3 text-center text-xl font-semibold text-primary outline-none ring-white transition duration-100 hover:ring md:text-base"
                     onClick={handleClick}
                   >
                     SING UP
-                  </button>
+                  </button> */}
+
+                  <Button label="SING UP" severity="success" className="w-1/5" onClick={handleClick} />
+
                   <div className="flex items-center justify-center p-4">
                     <p className="text-center text-n text-white">
                       Alredy have account?{" "}
@@ -255,7 +286,10 @@ export default function Login() {
                   </span>
                 </div>
 
-                <button className="flex items-center justify-center gap-2-lg bg-blue-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-blue-300 transition duration-100 hover:bg-blue-600 focus-visible:ring active:bg-blue-700 md:text-base">
+                <Button icon="pi pi-google" label="Continue with Google" severity="secondary" className="w-full"/>
+                <Button icon="pi pi-facebook" label="Continue with Facebook" severity="info" className="w-full"/>
+
+                {/*<button className="flex items-center justify-center gap-2-lg bg-blue-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-blue-300 transition duration-100 hover:bg-blue-600 focus-visible:ring active:bg-blue-700 md:text-base">
                   <svg
                     className="h-5 w-5 shrink-0"
                     width="24"
@@ -301,7 +335,7 @@ export default function Login() {
                     />
                   </svg>
                   Continue with Google
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
